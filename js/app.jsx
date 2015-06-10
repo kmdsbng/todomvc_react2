@@ -82,7 +82,7 @@ var app = app || {};
               ref="newField"
               id="new-todo"
               placeholder="What needs to be done?"
-              onKeyDown={null}
+              onKeyDown={this.handleEdit}
               autoFocus={true}
             />
           </header>
@@ -90,6 +90,18 @@ var app = app || {};
           {footer}
         </div>
       );
+    },
+    handleEdit: function (e) {
+      if (e.which !== ENTER_KEY) {
+        return;
+      }
+
+      if (!e.target.value) {
+        return;
+      }
+
+      this.props.model.addTodo(e.target.value);
+      e.target.value = '';
     }
   });
 

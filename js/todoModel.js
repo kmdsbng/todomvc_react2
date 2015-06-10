@@ -14,6 +14,28 @@ var app = app || {};
     this.onChanges = [];
   };
 
+  var proto = app.TodoModel.prototype;
+
+  proto.subscribe = function (cb) {
+    this.onChanges.push(cb);
+  };
+
+  proto.addTodo = function (val) {
+    var todo = {
+      id: Utils.uuid(),
+      completed: false,
+      title: val
+    };
+
+    this.todos.push(todo);
+    this.inform();
+  };
+
+  proto.inform = function () {
+    Utils.store(this.key, this.todos);
+    this.onChanges.forEach(function (cb) {cb(); });
+  };
+
 })();
 
 
