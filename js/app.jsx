@@ -18,13 +18,29 @@ var app = app || {};
   var ENTER_KEY = 13;
 
   var TodoApp = React.createClass({
+    getInitialState: function () {
+      return {
+        nowShowing: app.ALL_TODOS,
+        editing: null
+      };
+    },
     render: function () {
       var footer;
       var main;
+      var model = this.props.model;
       var todos = this.props.model.todos;
 
+      console.log(model, todos);
+
       var shownTodos = todos.filter(function (todo) {
-        return false;
+        switch (this.state.nowShowing) {
+        case app.ACTIVE_TODOS:
+          return !todo.completed;
+        case app.COMPLETED_TODOS:
+          return todo.completed;
+        default:
+          return true;
+        }
       }, this);
 
       var todoItems = shownTodos.map(function (todo) {
@@ -33,9 +49,9 @@ var app = app || {};
             key={todo.id}
             todo={todo}
             onToggle={null}
-            onDestroy={null}
-            onEdit={null}
-            editing={null}
+            onDestroy={model.destroy.bind(model, todo)}
+            onEdit={this.edit.bind(this, todo)}
+            editing={this.state.editing === todo.id}
             onSave={null}
             onCancel={null}
           />
@@ -102,18 +118,21 @@ var app = app || {};
 
       this.props.model.addTodo(e.target.value);
       e.target.value = '';
+    },
+    edit: function (todo) {
+      this.setState({editing: todo.id});
     }
   });
 
-  var model = new app.TodoModel('react-todos');
+  var todo_model = new app.TodoModel('react-todos');
 
   function render() {
     React.render(
-      <TodoApp model={model}/>,
+      <TodoApp model={todo_model}/>,
         document.getElementById('todoapp')
     );
   }
 
-  model.subscribe(render);
+  todo_model.subscribe(render);
   render();
 })();

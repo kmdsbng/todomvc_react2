@@ -6,17 +6,22 @@
 var app = app || {};
 
 (function () {
-  'use strict';
+  //'use strict';
 
   var ESCAPE_KEY = 27;
   var ENTER_KEY = 13;
 
   app.TodoItem = React.createClass({
+    getInitialState: function () {
+      return {
+        editingText: this.props.todo.title
+      };
+    },
     render: function() {
       return (
         <li className={React.addons.classSet({
-          completed: null,
-          editing: null
+          completed: this.props.todo.completed,
+          editing: this.props.editing
         })}>
           <div className="view">
             <input
@@ -25,23 +30,32 @@ var app = app || {};
               checked={null}
               onClick={null}
             />
-            <label onDoubleClick={null}>
-              {null}
+            <label onDoubleClick={this.handleDoubleClick}>
+              {this.state.editingText}
             </label>
             <button className="destroy"
-              onClick={null}
+              onClick={this.handleDestroy}
             />
           </div>
           <input
             ref="editField"
             className="edit"
-            value={null}
+            value={this.state.editingText}
             onBlur={null}
-            onChange={null}
+            onChange={this.handleChange}
             onKeyDown={null}
           />
         </li>
       );
+    },
+    handleDestroy: function (e) {
+      this.props.onDestroy();
+    },
+    handleDoubleClick: function (e) {
+      this.props.onEdit();
+    },
+    handleChange: function (e) {
+      this.setState({editingText: e.target.value});
     }
   });
 })();

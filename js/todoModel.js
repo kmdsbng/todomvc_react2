@@ -36,6 +36,13 @@ var app = app || {};
     this.onChanges.forEach(function (cb) {cb(); });
   };
 
+  proto.destroy = function (todo) {
+    this.todos = this.todos.filter(function (t) {
+      return t.id !== todo.id;
+    });
+    this.inform();
+  };
+
 })();
 
 
