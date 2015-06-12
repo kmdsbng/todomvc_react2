@@ -48,12 +48,12 @@ var app = app || {};
           <TodoItem
             key={todo.id}
             todo={todo}
-            onToggle={null}
+            onToggle={this.toggle.bind(this, todo)}
             onDestroy={model.destroy.bind(model, todo)}
             onEdit={this.edit.bind(this, todo)}
             editing={this.state.editing === todo.id}
-            onSave={null}
-            onCancel={null}
+            onSave={this.save.bind(this, todo)}
+            onCancel={this.cancel}
           />
         );
       }, this);
@@ -67,9 +67,9 @@ var app = app || {};
       if (activeTodoCount || completedCount) {
         footer =
           <TodoFooter
-            count={null}
-            completedCount={null}
-            nowShowing={null}
+            count={activeTodoCount}
+            completedCount={completedCount}
+            nowShowing={this.state.nowShowing}
             onClearCompleted={null}
           />;
       }
@@ -121,6 +121,15 @@ var app = app || {};
     },
     edit: function (todo) {
       this.setState({editing: todo.id});
+    },
+    save: function (todo, val) {
+      console.log(todo, val);
+
+      this.props.model.update(todo, val);
+      this.setState({editing: null});
+    },
+    cancel: function () {
+      this.setState({editing: null});
     }
   });
 

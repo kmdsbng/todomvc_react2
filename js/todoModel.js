@@ -43,6 +43,15 @@ var app = app || {};
     this.inform();
   };
 
+  proto.update = function (todoToSave, val) {
+    this.todos.forEach(function (todo) {
+      if (todo.id === todoToSave.id) {
+        todo.title = val;
+      }
+    });
+    this.inform();
+  };
+
 })();
 
 

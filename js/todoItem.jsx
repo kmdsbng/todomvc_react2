@@ -41,9 +41,9 @@ var app = app || {};
             ref="editField"
             className="edit"
             value={this.state.editingText}
-            onBlur={null}
+            onBlur={this.handleBlur}
             onChange={this.handleChange}
-            onKeyDown={null}
+            onKeyDown={this.handleKeyDown}
           />
         </li>
       );
@@ -56,6 +56,26 @@ var app = app || {};
     },
     handleChange: function (e) {
       this.setState({editingText: e.target.value});
+    },
+    handleKeyDown: function (e) {
+      if (e.which === ENTER_KEY) {
+        this.saveText(e.target.value);
+      } else if (e.which === ESCAPE_KEY) {
+        this.setState({editingText: this.props.todo.title});
+        this.props.onCancel();
+      }
+    },
+    handleBlur: function (e) {
+      this.saveText(e.target.value);
+    },
+    saveText: function (val) {
+      val = val.trim();
+      if (val) {
+        this.props.onSave(val);
+        this.setState({editingText: val});
+      } else {
+        this.props.onDestroy();
+      }
     }
   });
 })();
