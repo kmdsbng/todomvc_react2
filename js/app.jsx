@@ -122,11 +122,12 @@ var app = app || {};
         return;
       }
 
-      if (!e.target.value) {
+      var val = e.target.value.trim();
+      if (!val) {
         return;
       }
 
-      this.props.model.addTodo(e.target.value);
+      this.props.model.addTodo(val);
       e.target.value = '';
     },
     edit: function (todo) {
