@@ -27,8 +27,8 @@ var app = app || {};
             <input
               className="toggle"
               type="checkbox"
-              checked={null}
-              onClick={null}
+              checked={this.props.todo.completed}
+              onChange={this.handleToggle}
             />
             <label onDoubleClick={this.handleDoubleClick}>
               {this.state.editingText}
@@ -76,6 +76,9 @@ var app = app || {};
       } else {
         this.props.onDestroy();
       }
+    },
+    handleToggle: function (e) {
+      this.props.onToggle();
     }
   });
 })();

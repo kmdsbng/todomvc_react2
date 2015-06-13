@@ -12,9 +12,9 @@ app.TodoFooter = React.createClass({
     var clearButton = null;
     var nowShowing = this.props.nowShowing;
 
-    if (false) {
+    if (this.props.completedCount) {
       clearButton = (
-        <button id="clear-completed" onClick={null}>Clear completed</button>
+        <button id="clear-completed" onClick={this.handleClearCompleted}>Clear completed</button>
       );
     }
 
@@ -25,21 +25,24 @@ app.TodoFooter = React.createClass({
         </span>
         <ul id="filters">
           <li>
-            <a href="#/" className={null}>All</a>
+            <a href="#/" className={cx({selected: nowShowing === app.ALL_TODOS})}>All</a>
           </li>
           {' '}
           <li>
-            <a href="#/active" className={null}>Active</a>
+            <a href="#/active" className={cx({selected: nowShowing === app.ACTIVE_TODOS})}>Active</a>
           </li>
           {' '}
           <li>
-            <a href="#/completed" className={null}>Completed</a>
+            <a href="#/completed" className={cx({selected: nowShowing === app.COMPLETED_TODOS})}>Completed</a>
           </li>
 
         </ul>
         {clearButton}
       </footer>
     );
+  },
+  handleClearCompleted: function () {
+    this.props.onClearCompleted();
   }
 });
 

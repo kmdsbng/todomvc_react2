@@ -52,6 +52,29 @@ var app = app || {};
     this.inform();
   };
 
+  proto.toggle = function (todoToToggle) {
+    this.todos.forEach(function (todo) {
+      if (todo.id === todoToToggle.id) {
+        todo.completed = !todo.completed;
+      }
+    });
+    this.inform();
+  };
+
+  proto.clearCompleted = function () {
+    this.todos = this.todos.filter(function (todo) {
+      return !todo.completed;
+    });
+    this.inform();
+  };
+
+  proto.toggleAll = function () {
+    this.todos = this.todos.map(function (todo) {
+      return Utils.extend({}, todo, {completed: !todo.completed});
+    });
+    this.inform();
+  };
+
 })();
 
 

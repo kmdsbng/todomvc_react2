@@ -24,13 +24,20 @@ var app = app || {};
         editing: null
       };
     },
+    componentDidMount: function () {
+      var setState = this.setState;
+      var router = Router({
+        '/': setState.bind(this, {nowShowing: app.ALL_TODOS}),
+        '/active': setState.bind(this, {nowShowing: app.ACTIVE_TODOS}),
+        '/completed': setState.bind(this, {nowShowing: app.COMPLETED_TODOS})
+      });
+      router.init('/');
+    },
     render: function () {
       var footer;
       var main;
       var model = this.props.model;
       var todos = this.props.model.todos;
-
-      console.log(model, todos);
 
       var shownTodos = todos.filter(function (todo) {
         switch (this.state.nowShowing) {
@@ -70,7 +77,7 @@ var app = app || {};
             count={activeTodoCount}
             completedCount={completedCount}
             nowShowing={this.state.nowShowing}
-            onClearCompleted={null}
+            onClearCompleted={this.clearCompleted}
           />;
       }
 
@@ -80,8 +87,8 @@ var app = app || {};
             <input
               id="toggle-all"
               type="checkbox"
-              onChange={null}
-              checked={null}
+              onChange={this.handleToggleAll}
+              checked={!activeTodoCount && completedCount}
             />
             <ul id="todo-list">
               {todoItems}
@@ -107,6 +114,9 @@ var app = app || {};
         </div>
       );
     },
+    handleToggleAll: function (e) {
+      this.props.model.toggleAll();
+    },
     handleEdit: function (e) {
       if (e.which !== ENTER_KEY) {
         return;
@@ -123,13 +133,17 @@ var app = app || {};
       this.setState({editing: todo.id});
     },
     save: function (todo, val) {
-      console.log(todo, val);
-
       this.props.model.update(todo, val);
       this.setState({editing: null});
     },
     cancel: function () {
       this.setState({editing: null});
+    },
+    toggle: function (todo) {
+      this.props.model.toggle(todo);
+    },
+    clearCompleted: function () {
+      this.props.model.clearCompleted();
     }
   });
 
