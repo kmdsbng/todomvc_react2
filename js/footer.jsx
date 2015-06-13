@@ -3,12 +3,13 @@
 /*jshint trailing:false */
 /*jshint newcap:false */
 /*global React */
+/*global classNames */
 var app = app || {};
 
 app.TodoFooter = React.createClass({
   render: function () {
     var activeTodoWord = app.Utils.pluralize(this.props.count, 'item');
-    var cx = React.addons.classSet;
+    var cx = classNames;
     var clearButton = null;
     var nowShowing = this.props.nowShowing;
 

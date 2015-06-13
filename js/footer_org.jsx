@@ -23,8 +23,8 @@ var app = app || {};
 				);
 			}
 
-			// React idiom for shortcutting to `classSet` since it'll be used often
-			var cx = React.addons.classSet;
+                        // React idiom for shortcutting to `classSet` since it'll be used often => change to classNames
+			var cx = classNames;
 			var nowShowing = this.props.nowShowing;
 			return (
 				<footer id="footer">
